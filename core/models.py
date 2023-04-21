@@ -77,7 +77,7 @@ class Response(models.Model):
 
 class Reply(models.Model):
     response = models.ForeignKey(Response, null=True, on_delete=models.SET_NULL)
-    value = models.IntegerField(verbose_name='Valeur', default=0)
+    value = models.IntegerField(verbose_name='Valeur', default=1)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:

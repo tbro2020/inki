@@ -120,8 +120,8 @@ background: linear-gradient(140deg, rgba(241,241,241,1) 0%, rgba(159,43,104,0.20
           // if you have reached the end of the form... :
           if (currentTab >= x.length) {
             //...the form gets submitted:
-            let form = document.getElementById("form");
             document.getElementById("id_responses").value = JSON.stringify(data);
+            let form = document.getElementById("form");
             form.submit();
             return false;
           }
@@ -131,7 +131,7 @@ background: linear-gradient(140deg, rgba(241,241,241,1) 0%, rgba(159,43,104,0.20
 
         function fixStepIndicator(n) {
           // This function removes the "active" class of all steps...
-          var i, x = document.getElementsByClassName("step");
+          let i, x = document.getElementsByClassName("step");
           for (i = 0; i < x.length; i++) {
             x[i].className = x[i].className.replace(" active", "");
           }
