@@ -1,0 +1,69 @@
+{% load static %}
+<html>
+    <head>
+        <title>Accueil</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    </head>
+
+    <body>
+        <div class="container-fluid">
+            <div class="col mt-3 mb-5">
+                <h1 class="m-0">{{ obj.name }}</h1>
+                <small>Report of campaign created on {{ obj.created }}</small>
+            </div>
+
+            <div class="row">
+                {% for question in obj.questions %}
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header text-bg-success">{{ question.question }}</div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <dl>
+                                            {% for reply in question.replies %}
+                                                <dt class="col"><span class="badge bg-primary">{{ reply.response__response }}</span></dt>
+                                                <dd class="col">{{ reply.count }}</dd>
+                                            {% endfor %}
+                                        </dl>
+                                    </div>
+                                    <div class="col">
+                                        <canvas id="id_question_{{ question.id }}"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end">
+                                <small class="text-muted">{{ question.created }}</small>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+
+    <script>
+        {% for question in obj.questions %}
+            new Chart("id_question_{{ question.id }}", {
+              type: "pie",
+              data: {
+                labels: [{% for reply in question.replies %}"{{ reply.response__response }}",{% endfor %}],
+                datasets: [{
+                  backgroundColor: ["#ff6384", "#36a2eb", "#cc65fe", "#ffce56"],
+                  data: [{% for reply in question.replies %}"{{ reply.count }}",{% endfor %}]
+                }]
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: "{{ question.question }}"
+                }
+              }
+            });
+        {% endfor %}
+    </script>
+
+</html>

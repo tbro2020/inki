@@ -33,4 +33,5 @@ class Campaign(View):
 
 class Report(View):
     def get(self, request, pk):
+        obj = get_object_or_404(CampaignModel, pk=pk)
         return render(request, "report.html", locals())

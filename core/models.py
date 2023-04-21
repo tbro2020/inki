@@ -10,7 +10,7 @@ class Campaign(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def response_count(self):
-        return Response.objects.filter(question__campaign=self).count()
+        return Reply.objects.filter(response__question__campaign=self).count()
 
     def questions(self):
         return Question.objects.filter(campaign=self)
@@ -31,6 +31,11 @@ class Question(models.Model):
 
     def responses(self):
         return Response.objects.filter(question=self)
+
+    def replies(self):
+        value = Reply.objects.filter(response__question=self).values('response__response').annotate(count=models.Count('response'))
+        print(value)
+        return value
 
     def __str__(self):
         return f"{self.question}"
