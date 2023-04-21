@@ -1,0 +1,69 @@
+{% load static %}
+<html>
+    <head>
+        <title>Accueil</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+        <style>
+            body{
+background: rgb(241,241,241);
+background: linear-gradient(140deg, rgba(241,241,241,1) 0%, rgba(159,43,104,0.25) 96%, rgba(159,43,104,0.25) 100%);
+            }
+
+            .btn-pink{
+                background-color: rgba(159,43,104,1.0) !important;
+                color: white;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="col mt-3 mb-5">
+                <h1>Hey! {{ request.user.username }}</h1>
+                <small>Which campaign would like to run today ?</small>
+            </div>
+
+            <div class="row">
+                {% for campaign in qs %}
+                    <div class="col-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="m-0">{{ campaign.name }}</h5>
+                                    </div>
+                                    <div class="col text-end">
+                                        <h5 class="m-0">
+                                            <span class="badge bg-primary">
+                                                {{ campaign.response_count }}
+                                            </span>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                {{ campaign.description|default:'No description yet' }}
+                                <br />
+                                <small class="text-muted">Started on {{ campaign.created.date }}</small>
+                            </div>
+                            <div class="card-footer">
+                                <div class="d-grid gap-2">
+                                  <a href="{% url 'core:campaign' campaign.id %}" class="btn btn-pink" type="button">Launch the campaign</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col text-center">
+                        <img src="{% static 'images/hare.png' %}" class="img-fluid" width="128">
+                        <h2 class="text-muted mt-3">No campaign found</h2>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </body>
+
+</html>
